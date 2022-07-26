@@ -16,6 +16,8 @@ jobs: # 어떤 일을 할지를 정의
         shell: bash
         run: |
           STEP_1='This value comes from the step 1'
+
+          echo "::add-mask::$STEP_1"
           echo "::set-output name=value1::$STEP_1"
 
       - name: 'Set output value 2'
