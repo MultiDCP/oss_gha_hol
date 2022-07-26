@@ -7,33 +7,40 @@ env: # 환경 변수
   WORKFLOW_LEVEL: 'This value comes from the workflow level'
 
 jobs: # 어떤 일을 할지를 정의
-  first-job: # 이거 하나하나가 하나의 빌드 서버라고 보면 됨
-    name: 'First Job'
-    strategy:
-      matrix:
-        os: [ 'ubuntu-latest', 'windows-latest', 'macos-latest' ]
-        nodejs: [ '14.x', '16.x' ]
+  build-job: # 이거 하나하나가 하나의 빌드 서버라고 보면 됨
+    name: 'Build Job'
+    #if: github.event_name == 'pull_request'
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
+    
     steps:
-      - name: 'Setup node.js version'
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.nodejs }}
-      
-      - name: 'Run only on Windows'
-        if: matrix.os == 'windows-latest'
+      - name: 'Say Hello'
         shell: bash
         run: |
-          echo "Windows Only"
-      
-      - name: 'Not run on Windows'
-        if: matrix.os != 'windows-latest'
+          echo "Hello World"
+  
+  deploy-to-dev-job:
+    name: 'Deployment Job to DEV'
+    needs:
+    - build-job
+
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 'Say DEV'
         shell: bash
         run: |
-          echo "Not Windows"
-      
-      - name: 'Check node.js version on ${{ matrix.os }}'
+          echo "DEVELOPERS"
+  
+  deploy-to-prod-job:
+    name: 'Deployment Job to PROD'
+    needs:
+    - deploy-to-dev-job
+
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 'Say PROD'
         shell: bash
         run: |
-          echo "nodejs version: $(node --version)"
+          echo "PRODUCTION"
