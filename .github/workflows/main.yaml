@@ -1,0 +1,18 @@
+# 필수 : name, on, jobs
+name: 'My First GitHub Actions Workflow' # 워크플로우 이름
+
+on: push # [ 'push', 'pull_request' ] # 수행할 이벤트
+
+jobs: # 어떤 일을 할지를 정의
+  first-job: # 이거 하나하나가 하나의 빌드 서버라고 보면 됨
+    name: 'First Job'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Say Hello World on step 1'
+        shell: bash
+        run: |
+          echo "Hello World from Step 1"
+      - name: 'Say Lorem Ipsum on step 2'
+        shell: pwsh
+        run: |
+          echo "Lorem Ipsum from Step 2"
