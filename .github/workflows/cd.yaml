@@ -16,8 +16,6 @@ on:
 jobs:
   release:
     name: 'Release Apps'
-    needs:
-    - build
 
     runs-on: ubuntu-latest
     
