@@ -1,15 +1,13 @@
 # 필수 : name, on, jobs
-name: 'My First GitHub Actions Workflow' # 워크플로우 이름
+name: 'Manual Release' # 워크플로우 이름
 
 on: # [ 'push', 'pull_request' ] # 수행할 이벤트
-  push:
-    branches:
-    - main
-    tags:
-    - 'v*'
-  pull_request:
-    branches:
-    - main
+  workflow_dispatch:
+    inputs:
+      title:
+        type: string
+        required: true
+        description: 'Enter the release title'
 
 jobs: # 어떤 일을 할지를 정의
   build: # 이거 하나하나가 하나의 빌드 서버라고 보면 됨
@@ -76,5 +74,6 @@ jobs: # 어떤 일을 할지를 정의
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
           prerelease: false
+          title: ${{ github.event.inputs.title }}
           files: |
             artifacts/apiapp.zip
